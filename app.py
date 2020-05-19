@@ -33,8 +33,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
             dcc.Input(value='0', type='text'),
 
             html.Label('Weight (Pounds)'),
-            dcc.Input(value='0', type='text')]),
-             
+            dcc.Input(value='0', type='text')]),             
          html.Div(children=[
             html.Label('Age (Years)'),
             dcc.Input(value='0', type='text'),
