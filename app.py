@@ -13,23 +13,21 @@ colors = {
 
 
 
-app.layout = html.Div(
-                   
-    children=[
-    html.H2(children='Caloric Need Dashboard'),
-
-    html.H5(children='Welcome, I will need some information from you!'),
-    
+app.layout = html.Div([
     html.Div(
-        html.Div(children=[
+        [html.H2(children='Caloric Need Dashboard'),
+        html.H5(children='Welcome, I will need some information from you!')],
+        style={"textAlign": "center", 
+                'backgroundColor': colors['background'], 
+                'color': colors['text']}),
+    html.Div([
             html.Label('Gender'),
             dcc.Dropdown(
                 options=[
                     {'label': 'Male', 'value': 'M'},
                     {'label': 'Female', 'value': 'F'}
                 ],
-                value='M'
-            ),
+                value='M'),
 
             html.Label('Height (in)'),
             dcc.Input(value='0', type='text'),
@@ -38,27 +36,31 @@ app.layout = html.Div(
             dcc.Input(value='0', type='text'),
             
             html.Label('Age (years)'),
-            dcc.Input(value='0', type='text'),
+            dcc.Input(value='0', type='text')],
+        style={ 'backgroundColor': colors['background'], 
+                'textAlign': 'left',
+                'color': colors['text'],
+                'columnCount': 2}),
 
-            html.Label('Activity Level'),
+        html.Div([html.Label('Activity Level'),
             dcc.Slider(
                 min=0,
-                max=5,
+                max=6,
                 value=1,
                 marks={
                 1: 'Sedentary',
                 2: 'Lightly Active',
                 3: 'Moderately Active',
                 4: 'Very Active',
-                5: 'Professionally Active'})]
-                )
-            )], 
-        
-        style={     
-                'backgroundColor': colors['background'], 
-                'textAlign': 'left',
-                'color': colors['text'],
-                'columnCount': 2})
+                5: 'Professionally Active'})], 
+                 style={'textAlign': 'center', 
+                        'backgroundColor': colors['background'], 
+                        'textAlign': 'left', 
+                        'color': colors['text'], 
+                        'width': '100%', 
+                        'margin-left': 'auto', 
+                        'margin-right': 'auto'})
+            ])    
     
 def bmr(gender, wt, ht, age):
     if gender == 'Male':
