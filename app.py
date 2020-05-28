@@ -23,6 +23,7 @@ app.layout = html.Div([
     html.Div([
             html.Label('Gender'),
             dcc.Dropdown(
+                id='gender',
                 options=[
                     {'label': 'Male', 'value': 'M'},
                     {'label': 'Female', 'value': 'F'}
@@ -30,13 +31,13 @@ app.layout = html.Div([
                 value='M'),
 
             html.Label('Height (in)'),
-            dcc.Input(value='0', type='text'),
+            dcc.Input(id='ht', value='0', type='text'),
 
             html.Label('Weight (lbs)'),
-            dcc.Input(value='0', type='text'),
+            dcc.Input(id='wt', value='0', type='text'),
             
             html.Label('Age (years)'),
-            dcc.Input(value='0', type='text')],
+            dcc.Input(id='age', value='0', type='text')],
         style={ 'backgroundColor': colors['background'], 
                 'textAlign': 'left',
                 'color': colors['text'],
@@ -44,6 +45,7 @@ app.layout = html.Div([
 
         html.Div([html.Label('Activity Level'),
             dcc.Slider(
+                id='alevel'
                 min=0,
                 max=6,
                 value=1,
