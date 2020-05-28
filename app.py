@@ -1,6 +1,15 @@
+import pandas as pd
+import numpy as np
+
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
+
+import chart_studio.plotly as py
+import plotly.graph_objects as go
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -45,7 +54,7 @@ app.layout = html.Div([
 
         html.Div([html.Label('Activity Level'),
             dcc.Slider(
-                id='alevel'
+                id='alevel',
                 min=0,
                 max=6,
                 value=1,
@@ -54,41 +63,58 @@ app.layout = html.Div([
                 2: 'Lightly Active',
                 3: 'Moderately Active',
                 4: 'Very Active',
-                5: 'Professionally Active'})], 
+                5: 'Professionally Active'})],
+                 
+            
                  style={'textAlign': 'center', 
                         'backgroundColor': colors['background'], 
                         'textAlign': 'left', 
                         'color': colors['text'], 
                         'width': '100%', 
                         'margin-left': 'auto', 
-                        'margin-right': 'auto'})
+                        'margin-right': 'auto'}),
+    
+        html.Div([html.Button(children='Submit', 
+                    id='button'),
+                  
+                html.Div(id='output-container-button',
+                     children='Your results will be here!')],
+                style={'textAlign': 'center',
+                           'margin-left': 'auto', 
+                           'margin-right': 'auto'})
             ])    
-    
-def bmr(gender, wt, ht, age):
-    if gender == 'Male':
-        BMR = (10 * (wt*2.2)) + (6.25*(ht*0.39)) -(5*age) + 5
-    else:
-        BMR = (10 * (wt*2.2)) + (6.25*(ht*0.39)) - (5*age) - 161
-    return BMR
 
-def h_b(BMR,act_lvl):
-    
-    if act_lvl == 1:
-        daly_need = BMR*1.2
+@app.callback(
+    Output('output-container-button', 'children'),
+    [Input('gender', 'value'),
+     Input('ht', 'value'),
+     Input('wt', 'value'),
+     Input('age', 'value'),
+     Input('alevel', 'value')
+    ])
+
+def both(gender, wt, ht, age, alevel):
+    if gender == 'M':
+        BMR = 66 + (6.23 * float(wt)) + (12.7 * float(ht)) - (6.8 * float(age))
+    else:
+        BMR = 655 + (4.35 * float(wt)) + (4.7 * float(ht)) - (4.7 * float(age))
         
-    elif act_lvl == 2:
-        daly_need = BMR*1.375
+    if alevel == 1:
+        tdee = BMR*1.2
         
-    elif act_lvl == 3:
-        daly_need = BMR*1.55
+    elif alevel == 2:
+        tdee = BMR*1.375
         
-    elif act_lvl == 4:
-        daly_need = BMR*1.725
+    elif alevel == 3:
+        tdee = BMR*1.55
         
-    elif act_lvl == 5:
-        daly_need = BMR*1.9
+    elif alevel == 4:
+        tdee = BMR*1.725
         
-    return daly_need
+    elif alevel == 5:
+        tdee = BMR*1.9
+        
+    return (int(BMR), int(tdee))
 
 if __name__ == '__main__':
     app.run_server(debug=True)
