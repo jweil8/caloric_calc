@@ -74,47 +74,46 @@ app.layout = html.Div([
                         'margin-left': 'auto', 
                         'margin-right': 'auto'}),
     
-        html.Div([html.Button(children='Submit', 
-                    id='button'),
-                  
-                html.Div(id='output-container-button',
-                     children='Your results will be here!')],
+        html.Div(html.Table([
+                    html.Tr([html.Td(['Basal Metabloic Rate (BMR)']), html.Td(id='bmr'), html.Td(title=('The number of calories you"d burn if you stayed in bed all day'))]),
+                    html.Tr([html.Td(['Total Daily Energy Expenditure (TDEE)']), html.Td(id='tdee'), html.Td(title=('A measure of how many calories you burn per day'))])
+        ]),
                 style={'textAlign': 'center',
                            'margin-left': 'auto', 
                            'margin-right': 'auto'})
-            ])    
+])    
 
 @app.callback(
-    Output('output-container-button', 'children'),
+    [Output('bmr', 'children'),
+     Output('tdee', 'children')],
     [Input('gender', 'value'),
      Input('ht', 'value'),
      Input('wt', 'value'),
      Input('age', 'value'),
      Input('alevel', 'value')
     ])
+def both(gender, ht, wt, age, alevel):
+        if gender == 'M':
+            BMR = 66 + (6.23 * float(wt)) + (12.7 * float(ht)) - (6.8 * float(age))
+        else:
+            BMR = 655 + (4.35 * float(wt)) + (4.7 * float(ht)) - (4.7 * float(age))
 
-def both(gender, wt, ht, age, alevel):
-    if gender == 'M':
-        BMR = 66 + (6.23 * float(wt)) + (12.7 * float(ht)) - (6.8 * float(age))
-    else:
-        BMR = 655 + (4.35 * float(wt)) + (4.7 * float(ht)) - (4.7 * float(age))
-        
-    if alevel == 1:
-        tdee = BMR*1.2
-        
-    elif alevel == 2:
-        tdee = BMR*1.375
-        
-    elif alevel == 3:
-        tdee = BMR*1.55
-        
-    elif alevel == 4:
-        tdee = BMR*1.725
-        
-    elif alevel == 5:
-        tdee = BMR*1.9
-        
-    return (int(BMR), int(tdee))
+        if alevel == 1:
+            tdee = BMR*1.2
+
+        elif alevel == 2:
+            tdee = BMR*1.375
+
+        elif alevel == 3:
+            tdee = BMR*1.55
+
+        elif alevel == 4:
+            tdee = BMR*1.725
+
+        elif alevel == 5:
+            tdee = BMR*1.9
+
+        return (int(BMR), int(tdee))
 
 if __name__ == '__main__':
     app.run_server(debug=True)
